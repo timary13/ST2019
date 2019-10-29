@@ -1,1 +1,3 @@
-# timary13-ST2019
+# Marina Gordynets
+
+## Belarusian State University of Informatics and Radiolectronics, 2018
