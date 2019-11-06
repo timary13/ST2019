@@ -2,12 +2,21 @@ let IntBuilder = require('./IntBuilder.js');
 let StringBuilder = require('./StringBuilder.js');
 
 
-// let b = new IntBuilder(1);
-// let x = b.divide(2).get();
+let b = new IntBuilder(2);
+let x = b.plus(1,2).get();
+console.log(x);
+// x = b.get();
 // console.log(x);
 
-// let s = new StringBuilder();
-// let sx = s.plus('234 5').minus(1).multiply(2).remove('12').sub(1, 2).get();
+// let s = new StringBuilder("1");
+// let sx = s.plus('234 5', '67');
 // console.log(s.get());
 
 //console.log(IntBuilder.random(131, 17));
+
+// let m = new Map();
+// m.set("minus", [1,2]);
+// m.set("plus", 2);
+// for (let entry of m) {
+//     console.log(entry[1]);
+// }
