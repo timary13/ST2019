@@ -5,7 +5,7 @@ let Builder = function (value) {
     this.calculate = false;
 
     this.plus = function (args) {
-        
+
         if (this.calculate) {
             this.value += args.reduce((acum, item) => acum + item);
         } else {
@@ -23,7 +23,7 @@ let Builder = function (value) {
         }
         //cicle in map
         for (let entry of this.history) {
-            this['plus'](entry[1]);
+            this[entry[0]](entry[1]);
         }
         return this.value;
     }

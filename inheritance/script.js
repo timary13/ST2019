@@ -3,7 +3,7 @@ let StringBuilder = require('./StringBuilder.js');
 
 
 let b = new IntBuilder(2);
-let x = b.plus(1,2).get();
+let x = b.plus(3,2).minus(1,3).multiply(2).divide(3).get();
 console.log(x);
 // x = b.get();
 // console.log(x);

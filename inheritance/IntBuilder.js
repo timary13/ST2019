@@ -3,29 +3,45 @@ let Builder = require('./Builder.js');
 class IntBuilder extends Builder {
 
     constructor(value) {
-        if(isNaN(parseInt(value))) {
+        if (isNaN(parseInt(value))) {
             throw Error("ERROR: invalid enter value.");
         }
         super(value);
     }
 
-    minus(...args) {
-        this.value -= args.reduce((acum, item) => acum + item);
+    minus(args) {
+        if (this.calculate) {
+            this.value -= args.reduce((acum, item) => acum + item);
+        } else {
+            this.history.set("minus", Array.from(arguments));
+        }
         return this;
     }
 
     multiply(mul) {
-        this.value *= mul;
+        if (this.calculate) {
+            this.value *= mul;
+        } else {
+            this.history.set("multiply", mul);
+        }
         return this;
     }
 
     divide(div) {
-        this.value /= div;
+        if (this.calculate) {
+            this.value /= div;
+        } else {
+            this.history.set("divide", div);
+        }
         return this;
     }
 
     mod(div) {
-        this.value %= div;
+        if (this.calculate) {
+            this.value %= div;
+        } else {
+            this.history.set("mod", div);
+        }
         return this;
     }
 
