@@ -4,27 +4,39 @@ let Builder = function (value) {
     this.history = new Map();
     this.calculate = false;
 
-    this.plus = function (args) {
 
+    this.setItemMap = function (funName, args) {
+        let keyCount = this.getCountItem(funName);
+        let keyObj = {name: funName, id: ++keyCount};
+        this.history.set(keyObj, args);
+    };
+
+    this.getCountItem = function (funName) {
+        let count = 0;
+        this.history.forEach((value, key) => {
+            if (key.name == funName) {
+                count++;
+            }
+        });
+        return count;
+    };
+
+    this.plus = function (args) {
         if (this.calculate) {
             this.value += args.reduce((acum, item) => acum + item);
         } else {
-            this.history.set("plus", Array.from(arguments));
+            this.setItemMap("plus", Array.from(arguments));
         }
-
         return this;
-    }
+    };
 
     this.get = function () {
         this.calculate = true;
-        console.log("history: ");
         for (let entry of this.history) {
-            console.log(entry);
+            this[entry[0].name](entry[1]);
+            this.history.delete(entry[0]);
         }
-        //cicle in map
-        for (let entry of this.history) {
-            this[entry[0]](entry[1]);
-        }
+        this.calculate = false;
         return this.value;
     }
 }

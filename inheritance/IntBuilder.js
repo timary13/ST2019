@@ -13,7 +13,7 @@ class IntBuilder extends Builder {
         if (this.calculate) {
             this.value -= args.reduce((acum, item) => acum + item);
         } else {
-            this.history.set("minus", Array.from(arguments));
+            this.setItemMap("minus", Array.from(arguments));
         }
         return this;
     }
@@ -22,7 +22,7 @@ class IntBuilder extends Builder {
         if (this.calculate) {
             this.value *= mul;
         } else {
-            this.history.set("multiply", mul);
+            this.setItemMap("multiply", parseInt(mul));
         }
         return this;
     }
@@ -31,7 +31,7 @@ class IntBuilder extends Builder {
         if (this.calculate) {
             this.value /= div;
         } else {
-            this.history.set("divide", div);
+            this.setItemMap("divide", parseInt(div));
         }
         return this;
     }
@@ -40,12 +40,14 @@ class IntBuilder extends Builder {
         if (this.calculate) {
             this.value %= div;
         } else {
-            this.history.set("mod", div);
+            this.setItemMap("mod", parseInt(div));
         }
         return this;
     }
 
     static random(from, to) {
+        from = parseInt(from);
+        to = parseInt(to);
         let rand = from + Math.random() * (to + 1 - from);
         return Math.floor(rand);
     }
