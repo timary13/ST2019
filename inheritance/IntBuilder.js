@@ -1,4 +1,4 @@
-let Builder = require('./Builder.js');
+const Builder = require('./Builder.js');
 
 class IntBuilder extends Builder {
 
