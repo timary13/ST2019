@@ -5,4 +5,7 @@ node_modules
 autocomplete-tests
 setup-mocha.js
 js-assignments
+package-lock.js
+package.json
+README.md
 
