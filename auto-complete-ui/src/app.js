@@ -1,21 +1,14 @@
 import './style.css';
-import { createAutoComplete } from '../../auto-complete/js/script';
-import cities from'./cities';
+import InfiniteScroll from './infiniteScroll';
 
-const autocomplete = createAutoComplete(cities);
-
-function createDiv(className) {
+function createDiv(className, id = '') {
     let div = document.createElement('div');
-    div.className = className;//'autocomplete'
+    div.className = className;
+    if(id !== '') {
+        div.setAttribute('id', id);
+    }
     return div;
-}
-
-function createInput(id) {
-    let input = document.createElement('input');
-    input.setAttribute('type', 'text');
-    input.setAttribute('id', id);
-    return input;
-}
+};
 
 function closeAllLists(item) {
     let items = document.getElementsByClassName("autocomplete-items");
@@ -24,38 +17,41 @@ function closeAllLists(item) {
             items[i].parentNode.removeChild(items[i]);
         }
     }
-}
+};
 
-let input = createInput('inputWord');
+function createInput() {
+    let input = document.createElement('input');
+    input.setAttribute('type', 'text');
+    return input;
+};
+
+let input = createInput();
 let div = createDiv('autocomplete');
 div.appendChild(input);
 document.body.append(div);
 
-input.addEventListener("input", function(e) {
-    let word = this.value;
+
+input.addEventListener("input", function() {
+    let word = input.value;
     closeAllLists();
     if (!word) { return false;}
-    let items = createDiv('autocomplete-items');
+    let items = createDiv('autocomplete-items', 'items');
     this.parentNode.appendChild(items);
 
-    let result = autocomplete(word);
+    let render = new InfiniteScroll(word);
 
-    for (let i = 0; i < result.length; i++) {
-        let item = document.createElement("div");
-        item.innerHTML = "<strong>" + result[i].substr(0, word.length) + "</strong>";
-        item.innerHTML += result[i].substr(word.length);
-        item.innerHTML += "<input type='hidden' value='" + result[i] + "'>";
+    render.createStartItems();
 
-        item.addEventListener("click", function(e) {
-            input.value = this.getElementsByTagName("input")[0].value;
-            closeAllLists();
-        });
-
-        items.appendChild(item);
-
-    }
+    let eventWheel = function () {
+        return function (e) {
+            if(e.deltaY > 0) {
+                render.appendFirst();
+            }
+            else if(e.deltaY < 0) {
+                render.appendLast();
+            }
+        }
+    };
+    window.addEventListener('wheel', eventWheel());
 });
 
-document.addEventListener("click", function (e) {
-    closeAllLists(e.target);
-});
