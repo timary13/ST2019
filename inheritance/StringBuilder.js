@@ -31,7 +31,7 @@ StringBuilder.prototype.multiply = function (count) {
 
 StringBuilder.prototype.divide = function (num) {
     if (this.calculate) {
-        let divideResult = Math.floor(this.value.length / num);
+        const divideResult = Math.floor(this.value.length / num);
         this.value = this.value.slice(0, divideResult);
     } else {
         this.setItemMap("divide", parseInt(num));
@@ -41,7 +41,7 @@ StringBuilder.prototype.divide = function (num) {
 
 StringBuilder.prototype.remove = function (str) {
     if (this.calculate) {
-        let pos = 0;
+        var pos = 0;
         while (str != '' && (pos = this.value.indexOf(str)) != -1) {
             this.value = this.value.substr(0, pos) + this.value.substr(pos + str.length);
         }
@@ -53,7 +53,7 @@ StringBuilder.prototype.remove = function (str) {
 
 StringBuilder.prototype.sub = function (args) {
     if (this.calculate) {
-        let from, n;
+        var from, n;
         [from, n] = [args[0], args[1]];
         this.value = this.value.substr(from, from + n - 1);
     } else {

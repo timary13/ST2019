@@ -2,3 +2,8 @@
 node_modules
 *.bundle.js
 *.log
+autocomplete-tests
+setup-mocha.js
+js-assignments
+auto-complete-ui
+

@@ -1,4 +1,4 @@
-let Builder = function (value) {
+function Builder(value) {
 
     this.value = value;
     this.history = new Map();
@@ -6,13 +6,13 @@ let Builder = function (value) {
 };
 
 Builder.prototype.setItemMap = function (funName, args) {
-    let keyCount = this.getCountItem(funName);
-    let keyObj = {name: funName, id: ++keyCount};
+    var keyCount = this.getCountItem(funName);
+    const keyObj = {name: funName, id: ++keyCount};
     this.history.set(keyObj, args);
 };
 
 Builder.prototype.getCountItem = function (funName) {
-    let count = 0;
+    var count = 0;
     this.history.forEach((value, key) => {
         if (key.name == funName) {
             count++;
@@ -32,7 +32,7 @@ Builder.prototype.plus = function (args) {
 
 Builder.prototype.get = function () {
     this.calculate = true;
-    for (let entry of this.history) {
+    for (var entry of this.history) {
         this[entry[0].name](entry[1]);
         this.history.delete(entry[0]);
     }
