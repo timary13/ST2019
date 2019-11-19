@@ -7,7 +7,7 @@ setup-mocha.js
 js-assignments
 package-lock.json
 package.json
-Install&run.md
+README.md
 *.map
 *.sass-cache
 *.scss
