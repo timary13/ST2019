@@ -5,10 +5,11 @@ class InfiniteScroll {
         this.word = word;
         this.items = document.getElementById('items');
         this.iterator = new Iterator(this.word);
+        this.ITEM_IN_LIST = 5;
     }
 
     createStartItems() {
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < this.ITEM_IN_LIST; i++) {
             if (this.iterator.hasNext()) {
                 let item = this.createItem(this.iterator.next(), this.word.length);
                 this.items.appendChild(item);
@@ -35,7 +36,7 @@ class InfiniteScroll {
         let item = this.createDiv("item");
         item.innerHTML = "<strong>" + next.substr(0, length) + "</strong>";
         item.innerHTML += next.substr(length);
-        item.innerHTML += "<input type='hidden' value='" + next + "'>";
+        item.innerHTML += "<input type='hidden' value='${next}'>";
         item.addEventListener("click", function (e) {
             document.getElementsByTagName('input')[0].value = next;
             InfiniteScroll.closeAllLists();
