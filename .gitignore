@@ -5,7 +5,10 @@ node_modules
 autocomplete-tests
 setup-mocha.js
 js-assignments
-package-lock.js
+package-lock.json
 package.json
-README.md
+Install&run.md
+*.map
+*.sass-cache
+*.scss
 
