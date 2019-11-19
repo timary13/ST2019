@@ -21,6 +21,15 @@ InfiniteScroll.prototype.createDiv = function(className) {
     return div;
 };
 
+InfiniteScroll.closeAllLists = function(item) {
+    let items = document.getElementsByClassName("autocomplete-items");
+    for (let i = 0; i < items.length; i++) {
+        if (item != items[i]) {
+            items[i].parentNode.removeChild(items[i]);
+        }
+    }
+};
+
 InfiniteScroll.prototype.createItem = function (next = this.iterator.next(), length = this.word.length) {
     let item = this.createDiv("item");
     item.innerHTML = "<strong>" + next.substr(0, length) + "</strong>";
@@ -28,7 +37,7 @@ InfiniteScroll.prototype.createItem = function (next = this.iterator.next(), len
     item.innerHTML += "<input type='hidden' value='" + next + "'>";
     item.addEventListener("click", function (e) {
         document.getElementsByTagName('input')[0].value = next;
-        this.closeAllLists();
+        InfiniteScroll.closeAllLists();
     });
     return item;
 };

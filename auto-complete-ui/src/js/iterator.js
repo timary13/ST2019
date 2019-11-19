@@ -1,5 +1,5 @@
-import { createAutoComplete } from '../../auto-complete/js/script';
-import cities from'./cities';
+import { createAutoComplete } from '../../../auto-complete/js/script';
+import cities from '../cities';
 
 const autocomplete = createAutoComplete(cities);
 
