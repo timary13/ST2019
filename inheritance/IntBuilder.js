@@ -6,43 +6,29 @@ class IntBuilder extends Builder {
         if (isNaN(parseInt(value))) {
             throw Error("ERROR: invalid enter value.");
         }
+
         super(value);
     }
 
-    minus(args) {
-        if (this.calculate) {
-            this.value -= args.reduce((acum, item) => acum + item);
-        } else {
-            this.setItemMap("minus", Array.from(arguments));
-        }
-        return this;
+    minusCompute(args) {
+        this.value -= args.reduce((acum, item) => acum + item);
     }
 
-    multiply(mul) {
-        if (this.calculate) {
-            this.value *= mul;
-        } else {
-            this.setItemMap("multiply", parseInt(mul));
-        }
-        return this;
+    multiplyCompute(mul) {
+        this.value *= mul;
     }
 
-    divide(div) {
-        if (this.calculate) {
-            this.value /= div;
-        } else {
-            this.setItemMap("divide", parseInt(div));
-        }
-        return this;
+    divideCompute(div) {
+        this.value = Math.floor(this.value / div);
     }
 
     mod(div) {
-        if (this.calculate) {
-            this.value %= div;
-        } else {
-            this.setItemMap("mod", parseInt(div));
-        }
+        this.setItemMap("modCompute", parseInt(div));
         return this;
+    }
+
+    modCompute(div) {
+        this.value %= div;
     }
 
     static random(from, to) {

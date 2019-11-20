@@ -1,9 +1,7 @@
 function Builder(value) {
-
     this.value = value;
     this.history = new Map();
-    this.calculate = false;
-};
+}
 
 Builder.prototype.setItemMap = function (funName, args) {
     var keyCount = this.getCountItem(funName);
@@ -18,25 +16,40 @@ Builder.prototype.getCountItem = function (funName) {
             count++;
         }
     });
+
     return count;
 };
 
 Builder.prototype.plus = function (args) {
-    if (this.calculate) {
-        this.value += args.reduce((acum, item) => acum + item);
-    } else {
-        this.setItemMap("plus", Array.from(arguments));
-    }
+    this.setItemMap("plusCalculate", Array.from(arguments));
+    return this;
+};
+
+Builder.prototype.plusCalculate = function (args) {
+    this.value += args.reduce((acum, item) => acum + item);
+};
+
+Builder.prototype.minus = function (args) {
+    this.setItemMap("minusCompute", Array.from(arguments));
+    return this;
+};
+
+Builder.prototype.multiply = function (count) {
+    this.setItemMap("multiplyCompute", parseInt(count));
+    return this;
+};
+
+Builder.prototype.divide = function (count) {
+    this.setItemMap("divideCompute", parseInt(count));
     return this;
 };
 
 Builder.prototype.get = function () {
-    this.calculate = true;
     for (var entry of this.history) {
         this[entry[0].name](entry[1]);
         this.history.delete(entry[0]);
     }
-    this.calculate = false;
+
     return this.value;
 };
 
