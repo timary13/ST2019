@@ -4,9 +4,10 @@ import cities from '../cities';
 const autocomplete = createAutoComplete(cities);
 
 class Iterator {
-    constructor(word) {
+    constructor(word, count) {
         this.counter = -1;
         this.result = autocomplete(word);
+        this.ITEM_IN_LIST = count;
     };
 
     hasNext() {
@@ -19,17 +20,17 @@ class Iterator {
     };
 
     hasPreviousFive() {
-        return ((this.counter - 5) >= 0);
+        return ((this.counter - this.ITEM_IN_LIST) >= 0);
     };
 
     previousFiveItem() {
-        let count = this.counter - 5;
+        const count = this.counter - this.ITEM_IN_LIST;
         this.counter--;
         return this.result[count];
     };
 
     isNotEmpty() {
-        return ((this.result.length === 0) ? false : true);
+        return (this.result.length !== 0);
     };
 
 }

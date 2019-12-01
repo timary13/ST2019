@@ -22,7 +22,7 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                use: [MiniCssExtractPlugin.loader, 'css-loader'],
+                use: [MiniCssExtractPlugin.loader, 'css-loader']
             }
         ]
     },
@@ -37,7 +37,6 @@ module.exports = {
             chunkFilename: '[id].css'
         })
     ],
-    devtool: "inline-source-map",
 
 
     devServer: {
