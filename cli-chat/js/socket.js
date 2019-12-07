@@ -1,10 +1,15 @@
 const WebSocket = require('ws');
 const notify = require('./notifier');
+const fileInstruments = require('./fileManager');
+const FileLogger = fileInstruments.FileLogger;
 
 class Connection {
-    constructor(url) {
-        this.RECONNECT_INTERVAL = 5 * 1000;	// ms
-        this.open(url);
+    constructor(url, chatLogFile) {
+        this.RECONNECT_INTERVAL_MS = 5000;
+        this.NOTIFY_INTERVAL_MS = 1000;
+        this.url = url;
+        this.open(this.url);
+        this.logger = new FileLogger(chatLogFile);
     }
 
     open(url) {
@@ -16,10 +21,11 @@ class Connection {
             const msg = JSON.parse(data);
             msg
                 .sort((a, b) => a.time - b.time)
-                .forEach(e => {
-                    console.log(`${e.from} : ${e.message}`);
-                    if(e.time >= Date.now()) {
-                        notify.run(e.from, e.message);
+                .forEach(msg => {
+                    console.log(`${msg.from} : ${msg.message}`);
+                    this.logMessage(msg);
+                    if(Date.now() - msg.time <= this.NOTIFY_INTERVAL_MS) {
+                        notify.run(msg.from, msg.message);
                     }
                 });
 
@@ -47,6 +53,10 @@ class Connection {
         });
     }
 
+    logMessage(message) {
+        this.logger.appendDataAfterLastUpdate(message);
+    }
+
     send(data) {
         try {
             this.instance.send(JSON.stringify(data));
@@ -65,7 +75,7 @@ class Connection {
         setTimeout(function () {
             console.log("Connection: reconnecting...");
             that.open(that.url);
-        }, this.RECONNECT_INTERVAL);
+        }, this.RECONNECT_INTERVAL_MS);
     }
 }
 
