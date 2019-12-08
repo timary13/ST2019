@@ -1,58 +1,89 @@
-const lineWatcher = require('readline');
+const readline = require('readline');
 const fileInstruments = require('./fileManager');
 const FileManager = fileInstruments.FileManager;
-const Connection = require('./socket');
+const WebSocketClient = require('./websocketclient');
+const Bot = require('./bot');
 
 class LineWatcher {
-    constructor(chatUrl, nicknameFile, chatLogFile) {
-        this.nickname = '';
-        this.instance = lineWatcher.createInterface({
+    constructor(chatUrl, dirname, nicknameFile, chatLogFile) {
+        this.instance = readline.createInterface({
             input: process.stdin,
             output: process.stdout
         });
-        this.chat = null;
         this.url = chatUrl;
-        this.nicknameFile = new FileManager(nicknameFile);
+        this.dirname = dirname;
+        this.nicknameFile = new FileManager(dirname, nicknameFile);
         this.chatLogFile = chatLogFile;
         this.messageObject = {};
 
-        this.checkNickname();
+        this.getNickname();
         this.setEvents();
     }
 
-    checkNickname() {
+    checkAnswer(answer) {
+        if(!answer.trim()) {
+            return this.readNicknameFromFile();
+        }
+        else {
+            this.nickname = answer;
+            this.nicknameFile.write(this.nickname);
+        }
+        this.startChat();
+    }
+
+    readNicknameFromFile() {
+        this.nickname = this.nicknameFile.read();
+        if(!this.nickname) {
+            console.error("Nickname not found!");
+            return this.getNickname();
+        }
+    }
+
+    getNickname() {
         this.instance.question('Nickname?\n', (answer) => {
-            if(!answer.trim()) {
-                this.nickname = this.nicknameFile.read();
-                if(!this.nickname) {
-                    console.error("Nickname not found!");
-                    return this.checkNickname();
-                }
-            }
-            else {
-                this.nickname = answer;
-                this.nicknameFile.write(this.nickname);
-            }
-            console.log(`Hello, ${this.nickname}`);
-            this.messageObject.from = this.nickname;
-            this.chat = new Connection(this.url, this.chatLogFile);
+            this.checkAnswer(answer);
+            // this.startChat();
         });
+    }
+
+    startChat() {
+        console.log(`Hello, ${this.nickname}`);
+        this.messageObject.from = this.nickname;
+        this.chat = new WebSocketClient(this.url, this.dirname, this.chatLogFile);
+        this.bot = new Bot(this.chat);
     }
 
     setEvents() {
         this.instance.on('line', (message) => {
-            lineWatcher.moveCursor(process.stdout, 0, -1);
-
-            if(message === 'exit') {
-                this.instance.close();
-            }
-            this.messageObject.message = message;
-            this.chat.send(this.messageObject);
+            readline.moveCursor(process.stdout, 0, -1);
+           this.messageSorter(message);
         });
 
         this.instance.on('close', () => {
             this.chat.close();
         });
+    }
+
+    messageSorter(message) {
+        if(message === 'exit') {
+            this.instance.close();
+        }
+        this.messageFromClient(message);
+        if(message.startsWith('/bot')) {
+            this.messageFromBot(message);
+        }
+    }
+
+    messageFromBot(message) {
+        const botMessage = {};
+        botMessage.message = this.bot.sendToBot(this.nickname, message);
+        botMessage.from = 'Bot';
+        this.chat.send(botMessage);
+    }
+
+    messageFromClient(message) {
+        this.messageObject.message = message;
+        this.chat.send(this.messageObject);
     }
 }
 

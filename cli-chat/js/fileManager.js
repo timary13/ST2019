@@ -2,8 +2,17 @@ const fs = require('fs');
 const path = require('path');
 
 class FileManager {
-    constructor(filename) {
-        this.filename = path.join(__dirname, '../logs/', filename);
+    constructor(dirname, filename) {
+        this.dirname = path.join(__dirname, dirname);
+        this.existDirectory(this.dirname);
+        this.filename = path.join(this.dirname, filename);
+        this.existFile();
+    }
+
+    existDirectory(dirname) {
+        if (!fs.existsSync(dirname)){
+            fs.mkdirSync(dirname);
+        }
     }
 
     write(data) {
@@ -17,17 +26,18 @@ class FileManager {
         return name;
     }
 
-    appendFile(data) {
-        fs.appendFile(this.filename, JSON.stringify(data), (err) => {
-            if (err) console.log(err);
-        });
+    existFile() {
+        try {
+            fs.accessSync(this.filename, fs.F_OK);
+        } catch (e) {
+            fs.closeSync(fs.openSync(this.filename, 'w'));
+        }
     }
 }
 
 class FileLogger extends FileManager {
-    constructor(filename) {
-        super(filename);
-        this.existFile();
+    constructor(dirname, filename) {
+        super(dirname, filename);
     }
 
     lastUpdatedDate() {
@@ -35,12 +45,10 @@ class FileLogger extends FileManager {
         return mtime;
     }
 
-    existFile() {
-        try {
-            fs.accessSync(this.filename, fs.F_OK);
-        } catch (e) {
-            fs.closeSync(fs.openSync(this.filename, 'w'));
-        }
+    appendFile(data) {
+        fs.appendFile(this.filename, JSON.stringify(data), (err) => {
+            if (err) console.log(err);
+        });
     }
 
     appendDataAfterLastUpdate(msg) {

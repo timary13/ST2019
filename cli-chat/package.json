@@ -2,9 +2,13 @@
   "name": "cli-chat",
   "version": "1.0.0",
   "description": "",
-  "main": "js/socket.js",
+  "main": "js/websocketclient.js",
   "dependencies": {
+    "colors": "^1.4.0",
+    "dateformat": "^3.0.3",
+    "dotenv": "^8.2.0",
     "node-notifier": "^6.0.0",
+    "node-telegram-bot-api": "^0.40.0",
     "websocket": "^1.0.30",
     "ws": "^7.2.0"
   },

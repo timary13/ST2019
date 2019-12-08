@@ -1,0 +1,5 @@
+{
+  "time": "grey",
+  "from": ["blue", "bold"],
+  "message": ["cyan", "italic"]
+}
