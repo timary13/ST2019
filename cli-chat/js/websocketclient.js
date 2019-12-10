@@ -8,7 +8,7 @@ const MessageParser = require('./messageParser');
 class WebSocketClient {
     constructor(url, dirname, chatLogFile) {
         this.RECONNECT_INTERVAL_MS = 5000;
-        this.NOTIFY_INTERVAL_MS = 1000;
+        this.NOTIFY_INTERVAL_MS = 5000;
         this.url = url;
         this.open(this.url);
         this.logger = new FileLogger(dirname, chatLogFile);

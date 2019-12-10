@@ -1,6 +1,6 @@
 const colors = require('colors/safe');
 const dateFormat = require('dateformat');
-const colorTheme = require('./colorTheme');
+const colorTheme = require('../colorTheme');
 
 class MessageParser {
     constructor() {

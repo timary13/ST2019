@@ -15,6 +15,7 @@ class App {
         this.dirname = dirname;
         this.nicknameFile = new FileManager(dirname, nicknameFile);
         this.chatLogFile = chatLogFile;
+        this.MESSAGE_EXIT = 'exit';
 
         this.getNickname();
         this.setEvents();
@@ -59,7 +60,7 @@ class App {
     }
 
     lineWatcher(message) {
-        if (message === 'exit') {
+        if (message === this.MESSAGE_EXIT) {
             this.instance.close();
         }
         this.messageSender.sender(message);
