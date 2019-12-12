@@ -2,3 +2,12 @@
 node_modules
 *.bundle.js
 *.log
+autocomplete-tests
+setup-mocha.js
+js-assignments
+package-lock.json
+package.json
+*.map
+*.sass-cache
+*.scss
+
