@@ -45,5 +45,3 @@ export default function UpdateForm({ submit }) {
     </form>
     );
 }
-
-

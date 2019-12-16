@@ -17,5 +17,3 @@ export default function DeleteForm ({ submit }) {
         </fieldset>
     </form>;
 }
-
-
