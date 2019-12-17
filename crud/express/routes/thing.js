@@ -33,8 +33,8 @@ api.post('/', asyncHandler(async (req, res) => {
     if (!title || !body) {
         return res.sendStatus(400);
     }
-    await createThing({title, body});
-    res.send(201);
+    const newItem = await createThing({title, body});
+    res.send(newItem);
 }));
 
 api.put('/:id', validateIdParam, asyncHandler(async (req, res) => {
