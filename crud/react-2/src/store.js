@@ -12,7 +12,7 @@ const reducer = (state = [], action) => {
 			return [...state, action.payload];
 		case REMOVE_DATA:
 			return state.filter((item) => {
-				return item._id !== action.payload.id;
+				return item._id !== action.payload;
 			});
 		case ADD_SOME_DATA:
 			return [...action.payload];

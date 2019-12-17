@@ -1,15 +1,17 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux'
 
 import List from './List';
 import AddForm from './AddForm';
-import DeleteForm from './DeleteForm';
-import FindForm from './FindForm';
 import UpdateForm from './UpdateForm';
 
-import { addData, fetchData, removeData, updateData, findData } from '../actions';
+import { addData, fetchData, removeData, updateData } from '../actions';
 
-function App ({ addData, removeData, fetchData, data, findData, updateData }) {
+function App ({ addData, removeData, fetchData, data, updateData }) {
+	const [title, setTitle] = useState('');
+	const [body, setBody] = useState('');
+	const [id, setId] = useState('');
+
 	useEffect(() => {
 		fetchData();
 	}, []);
@@ -18,12 +20,16 @@ function App ({ addData, removeData, fetchData, data, findData, updateData }) {
 		console.log(data);
 	}, [data]);
 
+	const setReadForm = (data) => {
+		setBody(data.body);
+		setTitle(data.title);
+		setId(data._id);
+	};
+
 	return <div>
 		<AddForm submit={(data) => addData(data)} />
-		<DeleteForm submit={(data) => removeData(data)} />
-		<FindForm submit={(data) => findData(data)} />
-		<UpdateForm submit={(id, data) => updateData(id, data)}/>
-		<List values={data}/>
+		<UpdateForm load={{title,body,id}} submit={(id, data) => updateData(id, data)}/>
+		<List values={data} remove={(data) => removeData(data)} update={(data) => setReadForm(data)}/>
 	</div>;
 }
 
@@ -36,7 +42,6 @@ const mapDispatchToProps = {
 	fetchData,
 	removeData,
 	updateData,
-	findData,
 };
 
 export default connect(

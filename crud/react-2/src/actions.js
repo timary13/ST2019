@@ -1,17 +1,9 @@
-import { fetch, fetchAdd, fetchRemove, fetchUpdate, fetchFind  } from './fetch';
+import { fetch, fetchAdd, fetchRemove, fetchUpdate } from './fetch';
 
 export const ADD_DATA = 'ADD_DATA';
 export const REMOVE_DATA = 'REMOVE_DATA';
 export const ADD_SOME_DATA = 'ADD_SOME_DATA';
 
-
-export function findData (value) {
-    return (dispatch) => {
-        fetchFind(value).then((data) => {
-            dispatch(addSomeData(data));
-        });
-    }
-}
 
 export function updateData (id, value) {
     return (dispatch) => {
@@ -23,17 +15,17 @@ export function updateData (id, value) {
 
 export function addData (values) {
     return (dispatch) => {
-        fetchAdd(values).then(() => {
-            dispatch(addDataStore(values));
+        fetchAdd(values).then((item) => {
+            dispatch(addDataStore(item));
         });
     }
 }
 
-export function removeData (value) {
-    console.log('id ' + value.id);
+export function removeData (id) {
     return (dispatch) => {
-        fetchRemove(value).then(() => {
-            dispatch(removeDataStore(value));
+        dispatch(removeDataStore(id));
+        fetchRemove(id).then(() => {
+            dispatch(removeDataStore(id));
         });
     }
 }
